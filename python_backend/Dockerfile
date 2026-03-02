@@ -17,7 +17,7 @@ RUN uv pip install --system -r pyproject.toml
 # --- AI Model Pre-download (Yeni Eklenen Kısım) ---
 # Modeli imajın içine build aşamasında indiriyoruz. 
 # Bu sayede konteynır ayağa kalktığında internete ihtiyaç duymaz ve anında çalışır.
-RUN python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('all-MiniLM-L6-v2')"
+# RUN python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('all-MiniLM-L6-v2')"
 # --------------------------------------------------
 
 COPY . .
