@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+  # Vektör desteği olan PostgreSQL (pgvector)
+  postgres_db:
+    image: ankane/pgvector:latest
+    container_name: nexus_postgres
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password123
+      POSTGRES_DB: nexus_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # Chat geçmişi için MongoDB
+  mongo_db:
+    image: mongo:latest
+    container_name: nexus_mongo
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password123
+    volumes:
+      - mongo_data:/data/db
+
+  # Redis
+  redis_db:
+    image: redis:7-alpine
+    container_name: nexus_redis
+    ports:
+      - "6379:6379"
+
+volumes:
+  postgres_data:
+  mongo_data:
