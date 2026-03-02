@@ -4,26 +4,26 @@ A high-performance, scalable RAG (Retrieval-Augmented Generation) application bu
 
 ## 🌟 Key Features
 
-* **RAM-Efficient Streaming Upload:** Handles large PDF files using 64KB chunked streaming to prevent memory overflows (OOM protection).
-* **Smart Deduplication (SHA-256):** Cryptographic hashing prevents duplicate uploads, saving storage costs in Cloudinary and Database entries.
-* **Hybrid Storage Architecture:** * **MongoDB:** Stores document metadata.
-    * **Cloudinary:** Securely hosts binary PDF assets.
-    * **pgvector (PostgreSQL):** High-speed vector similarity search for RAG.
-    * **Redis:** Manages the Celery task queue for background processing.
-* **Asynchronous Task Processing:** Celery workers handle heavy embedding and PDF parsing tasks outside the main request/response cycle.
-* **Modern Frontend:** Next.js 15 with a session-based document history manager for seamless context switching.
+- **RAM-Efficient Streaming Upload:** Handles large PDF files using 64KB chunked streaming to prevent memory overflows (OOM protection).
+- **Smart Deduplication (SHA-256):** Cryptographic hashing prevents duplicate uploads, saving storage costs in Cloudinary and Database entries.
+- **Hybrid Storage Architecture:** \* **MongoDB:** Stores document metadata.
+  - **Cloudinary:** Securely hosts binary PDF assets.
+  - **pgvector (PostgreSQL):** High-speed vector similarity search for RAG.
+  - **Redis:** Manages the Celery task queue for background processing.
+- **Asynchronous Task Processing:** Celery workers handle heavy embedding and PDF parsing tasks outside the main request/response cycle.
+- **Modern Frontend:** Next.js 15 with a session-based document history manager for seamless context switching.
 
 ## 🛠️ Tech Stack
 
-| Layer | Technology |
-| :--- | :--- |
-| **Backend** | FastAPI (Python), Uvicorn |
-| **Frontend** | Next.js 15, TypeScript, Tailwind CSS (Planned) |
-| **AI/LLM** | Llama 3.3 (via Groq), LangChain |
-| **Vector DB** | pgvector (PostgreSQL) |
-| **Primary DB** | MongoDB |
-| **Caching/Queue** | Redis, Celery |
-| **Storage** | Cloudinary API |
+| Layer             | Technology                                     |
+| :---------------- | :--------------------------------------------- |
+| **Backend**       | FastAPI (Python), Uvicorn                      |
+| **Frontend**      | Next.js 15, TypeScript, Tailwind CSS (Planned) |
+| **AI/LLM**        | Llama 3.3 (via Groq), LangChain                |
+| **Vector DB**     | pgvector (PostgreSQL)                          |
+| **Primary DB**    | MongoDB                                        |
+| **Caching/Queue** | Redis, Celery                                  |
+| **Storage**       | Cloudinary API                                 |
 
 ## 🏗️ System Architecture
 
@@ -35,11 +35,13 @@ A high-performance, scalable RAG (Retrieval-Augmented Generation) application bu
 ## 🚀 Getting Started
 
 ### Prerequisites
-* Python 3.9+
-* Node.js 18+
-* Docker (for Redis, MongoDB, and Postgres with pgvector)
+
+- Python 3.9+
+- Node.js 18+
+- Docker (for Redis, MongoDB, and Postgres with pgvector)
 
 ### Installation
+
 1.  **Clone the repo:**
     ```bash
     git clone https://github.com/your-username/ai-pdf-analyzer.git
@@ -47,8 +49,8 @@ A high-performance, scalable RAG (Retrieval-Augmented Generation) application bu
 2.  **Backend Setup:**
     ```bash
     cd ai-pdf-backend
-    pip install -r requirements.txt
-    uvicorn main:app --reload
+    uv sync
+    uv run uvicorn app.main:app --reload
     ```
 3.  **Frontend Setup:**
     ```bash
@@ -58,4 +60,5 @@ A high-performance, scalable RAG (Retrieval-Augmented Generation) application bu
     ```
 
 ---
+
 **Built by Özenç Dönmezer • 2026 AI Backend Portfolio Project**
