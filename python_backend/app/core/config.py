@@ -29,6 +29,8 @@ class Settings(BaseSettings):
     CLOUDINARY_API_KEY: Optional[str] = Field(default=None, alias="CLOUDINARY_API_KEY")
     CLOUDINARY_API_SECRET: Optional[str] = Field(default=None, alias="CLOUDINARY_API_SECRET")
 
+    HF_TOKEN: Optional[str] = Field(default=None, alias="HF_TOKEN")
+
     # Pydantic Settings Yapılandırması
     model_config = SettingsConfigDict(
         env_file=".env", 

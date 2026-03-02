@@ -660,3 +660,22 @@ DETAIL:  Key (file_hash)=(20c0ba7b3d1d0211a0db7d121672cc16b2bc83ad7b665869780570
 2026-03-02 16:19:56.540 | INFO     | app.worker.tasks:process_pdf_task:26 - Total embeddings generated: 9
 2026-03-02 16:19:56.662 | SUCCESS  | app.worker.tasks:process_pdf_task:42 - Successfully saved 9 vectors to PostgreSQL for hash: 20c0ba7b3d1d0211a0db7d121672cc16b2bc83ad7b665869780570070a562f24
 2026-03-02 16:19:56.664 | INFO     | app.worker.tasks:process_pdf_task:56 - Temporary file cleaned up: C:\Users\ozzenc\AppData\Local\Temp\tmpwojbsvjh.pdf
+2026-03-02 17:28:36.808 | INFO     | app.main:lifespan:15 - The application is starting...
+2026-03-02 17:29:07.332 | ERROR    | app.core.database:check_db_conn:23 - Failed to connect to MongoDB: localhost:27017: [WinError 10061] Hedef makine etkin olarak reddettiğinden bağlantı kurulamadı (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 20000.0ms), Timeout: 30s, Topology Description: <TopologyDescription id: 69a59e592a0804ba44835196, topology_type: Unknown, servers: [<ServerDescription ('localhost', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('localhost:27017: [WinError 10061] Hedef makine etkin olarak reddettiğinden bağlantı kurulamadı (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 20000.0ms)')>]>
+2026-03-02 17:29:07.333 | INFO     | app.main:lifespan:20 - Checking/Creating PostgreSQL tables...
+2026-03-02 17:29:09.343 | ERROR    | app.main:lifespan:25 - An error occurred while closing the application.: (psycopg2.errors.UndefinedObject) type "vector" does not exist
+LINE 6:  embedding VECTOR(384), 
+                   ^
+
+[SQL: 
+CREATE TABLE pdf_vectors (
+	id SERIAL NOT NULL, 
+	file_hash VARCHAR NOT NULL, 
+	content TEXT NOT NULL, 
+	embedding VECTOR(384), 
+	PRIMARY KEY (id)
+)
+
+]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-03-02 17:32:40.508 | INFO     | app.main:lifespan:28 - The application is shutting down...
