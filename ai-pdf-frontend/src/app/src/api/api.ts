@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // URL sonuna v1'den sonra slash KOYMUYORUZ
-const API_BASE_URL = "https://ozzenc-ai-pdf-analyzer.hf.space/api/v1";
+const API_BASE_URL = "https://ozzenc-ai-pdf-analyzer.hf.space/--/api/v1";
 
 const api = axios.create({
   baseURL: API_BASE_URL,
