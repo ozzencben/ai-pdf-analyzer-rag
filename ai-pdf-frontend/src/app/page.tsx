@@ -20,15 +20,15 @@ export default function Home() {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
 
-  // --- SYSTEM WARM-UP STATE (Soğuk Başlangıç Koruması) ---
+  // --- SYSTEM WARM-UP STATE (Cold Start Protection) ---
   const [systemReady, setSystemReady] = useState<boolean>(false);
   const [warmupProgress, setWarmupProgress] = useState<number>(0);
 
   const answerRef = useRef<HTMLDivElement>(null);
 
-  // 1. Sistem Hazırlık Süreci (30 Saniye Loader)
+  // 1. System Preparation Process (30 Seconds Loader)
   useEffect(() => {
-    const duration = 30000; // 30 saniye
+    const duration = 30000; // 30 seconds
     const intervalTime = 100;
     const increment = 100 / (duration / intervalTime);
 
@@ -46,7 +46,7 @@ export default function Home() {
     return () => clearInterval(timer);
   }, []);
 
-  // 2. LocalStorage'dan Geçmişi Yükle
+  // 2. Load History from LocalStorage
   useEffect(() => {
     const savedHistory = localStorage.getItem("pdf_analysis_history");
     if (savedHistory) {
@@ -63,14 +63,14 @@ export default function Home() {
     }
   }, []);
 
-  // 3. Geçmiş Güncellendiğinde Kaydet
+  // 3. Save when History is Updated
   useEffect(() => {
     if (history.length > 0) {
       localStorage.setItem("pdf_analysis_history", JSON.stringify(history));
     }
   }, [history]);
 
-  // 4. Cevap geldiğinde scroll yap
+  // 4. Scroll when Answer Arrives
   useEffect(() => {
     if (answer && answerRef.current) {
       answerRef.current.scrollIntoView({ behavior: "smooth" });
@@ -102,14 +102,14 @@ export default function Home() {
 
         if (isDuplicate) {
           alert(
-            "Bu dosya kütüphanenizde mevcut. Hemen soru sormaya başlayabilirsiniz!",
+            "Security Protocol: This document already exists in the database. Utilizing existing vector embeddings for instant analysis.",
           );
         }
       } else {
-        throw new Error("Sunucudan geçersiz yanıt alındı.");
+        throw new Error("Invalid response received from the server.");
       }
     } catch (err: unknown) {
-      handleApiError(err, "Yükleme Hatası");
+      handleApiError(err, "Upload Error");
     } finally {
       setLoading(false);
     }
@@ -123,7 +123,7 @@ export default function Home() {
       const data = await askQuestion(query, fileHash);
       setAnswer(data.answer);
     } catch (err: unknown) {
-      handleApiError(err, "Sorgu Hatası");
+      handleApiError(err, "Query Error");
     } finally {
       setLoading(false);
     }
@@ -136,7 +136,7 @@ export default function Home() {
         `${prefix}: ${typeof detail === "string" ? detail : err.message}`,
       );
     } else {
-      setError(`${prefix}: Beklenmedik bir hata oluştu.`);
+      setError(`${prefix}: An unexpected error occurred.`);
     }
   };
 
@@ -163,7 +163,7 @@ export default function Home() {
         }}
       >
         <h2 style={{ marginBottom: "20px", letterSpacing: "1px" }}>
-          Nexus Engine Isıtılıyor...
+          Warming up Nexus Engine...
         </h2>
         <div
           style={{
@@ -183,9 +183,18 @@ export default function Home() {
             }}
           />
         </div>
-        <p style={{ marginTop: "15px", color: "#666", fontSize: "0.9rem" }}>
-          AI modelleri ve veritabanı bağlantıları optimize ediliyor. (%
-          {Math.round(warmupProgress)})
+        <p
+          style={{
+            marginTop: "15px",
+            color: "#666",
+            fontSize: "0.9rem",
+            textAlign: "center",
+          }}
+        >
+          Initializing Celery Workers, establishing Vector DB connections,
+          <br />
+          and optimizing Llama 3.3 70B inference engine. (
+          {Math.round(warmupProgress)}%)
         </p>
       </div>
     );
@@ -196,7 +205,7 @@ export default function Home() {
       style={{ backgroundColor: "#050505", color: "#eee", minHeight: "100vh" }}
     >
       <main
-        style={{ padding: "40px 20px", maxWidth: "1000px", margin: "0 auto" }}
+        style={{ padding: "40px 20px", maxWidth: "1200px", margin: "0 auto" }}
       >
         <header style={{ textAlign: "center", marginBottom: "50px" }}>
           <h1
@@ -207,7 +216,7 @@ export default function Home() {
               letterSpacing: "-1px",
             }}
           >
-            AI PDF Analyzer{" "}
+            Nexus AI PDF Analyzer{" "}
             <span
               style={{
                 fontSize: "0.8rem",
@@ -222,14 +231,94 @@ export default function Home() {
             </span>
           </h1>
           <p style={{ color: "#aaa", fontSize: "1.1rem" }}>
-            Yüksek performanslı doküman zekası motoru.
+            Professional-grade Distributed Document Intelligence System.
           </p>
         </header>
+
+        {/* --- SYSTEM CAPABILITIES SUMMARY (NEW) --- */}
+        <section
+          style={{
+            background: "linear-gradient(145deg, #0a0a0a 0%, #111 100%)",
+            border: "1px solid #222",
+            padding: "30px",
+            borderRadius: "16px",
+            marginBottom: "40px",
+          }}
+        >
+          <h3 style={{ marginTop: 0, color: "#3b82f6", fontSize: "1.2rem" }}>
+            🚀 System Architecture & Capabilities
+          </h3>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+              gap: "20px",
+              marginTop: "20px",
+            }}
+          >
+            <div
+              style={{
+                background: "#050505",
+                padding: "15px",
+                borderRadius: "10px",
+                border: "1px solid #222",
+              }}
+            >
+              <strong
+                style={{ display: "block", color: "#fff", marginBottom: "5px" }}
+              >
+                Distributed Processing
+              </strong>
+              <p style={{ fontSize: "0.85rem", color: "#888", margin: 0 }}>
+                High-volume file processing handled by{" "}
+                <strong>Celery Workers</strong> & <strong>Redis</strong> message
+                broker.
+              </p>
+            </div>
+            <div
+              style={{
+                background: "#050505",
+                padding: "15px",
+                borderRadius: "10px",
+                border: "1px solid #222",
+              }}
+            >
+              <strong
+                style={{ display: "block", color: "#fff", marginBottom: "5px" }}
+              >
+                Vector Intelligence
+              </strong>
+              <p style={{ fontSize: "0.85rem", color: "#888", margin: 0 }}>
+                Utilizing <strong>PostgreSQL (pgvector)</strong> for semantic
+                search and high-dimensional embeddings.
+              </p>
+            </div>
+            <div
+              style={{
+                background: "#050505",
+                padding: "15px",
+                borderRadius: "10px",
+                border: "1px solid #222",
+              }}
+            >
+              <strong
+                style={{ display: "block", color: "#fff", marginBottom: "5px" }}
+              >
+                Smart Persistence
+              </strong>
+              <p style={{ fontSize: "0.85rem", color: "#888", margin: 0 }}>
+                <strong>SHA-256</strong> hashing prevents duplicate processing.
+                Media handled via <strong>Cloudinary</strong> &{" "}
+                <strong>MongoDB</strong>.
+              </p>
+            </div>
+          </div>
+        </section>
 
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: history.length > 0 ? "250px 1fr" : "1fr",
+            gridTemplateColumns: history.length > 0 ? "300px 1fr" : "1fr",
             gap: "30px",
           }}
         >
@@ -246,7 +335,7 @@ export default function Home() {
                   textTransform: "uppercase",
                 }}
               >
-                Son Dökümanlar
+                Document Library
               </h4>
               <div
                 style={{ display: "flex", flexDirection: "column", gap: "8px" }}
@@ -257,7 +346,7 @@ export default function Home() {
                     onClick={() => switchDocument(doc)}
                     style={{
                       textAlign: "left",
-                      padding: "10px",
+                      padding: "12px",
                       borderRadius: "8px",
                       fontSize: "0.85rem",
                       backgroundColor:
@@ -270,14 +359,14 @@ export default function Home() {
                       transition: "0.3s",
                     }}
                   >
-                    {doc.name}
+                    📄 {doc.name}
                   </button>
                 ))}
               </div>
             </aside>
           )}
 
-          {/* MAIN */}
+          {/* MAIN ACTIONS */}
           <div
             style={{ display: "flex", flexDirection: "column", gap: "25px" }}
           >
@@ -298,8 +387,8 @@ export default function Home() {
                 }}
               >
                 {fileHash
-                  ? `Aktif: ${currentFileName} ✓`
-                  : "1. Adım: PDF Yükle"}
+                  ? `Active Document: ${currentFileName} ✓`
+                  : "Step 1: Ingest New PDF Document"}
               </h3>
               <div
                 style={{
@@ -329,7 +418,7 @@ export default function Home() {
                     transition: "0.2s",
                   }}
                 >
-                  {loading ? "İşleniyor..." : "Yükle"}
+                  {loading ? "Asynchronous Upload..." : "Upload & Vectorize"}
                 </button>
               </div>
             </section>
@@ -346,7 +435,7 @@ export default function Home() {
               }}
             >
               <h3 style={{ marginTop: 0, fontSize: "1.1rem" }}>
-                2. Adım: Soru Sor
+                Step 2: Natural Language Query
               </h3>
               <div
                 style={{
@@ -358,7 +447,7 @@ export default function Home() {
               >
                 <input
                   type="text"
-                  placeholder="Döküman hakkında herhangi bir şey sor..."
+                  placeholder="Ask a question about document content (e.g., 'Summarize the financial risks')"
                   style={{
                     padding: "16px",
                     borderRadius: "10px",
@@ -387,12 +476,12 @@ export default function Home() {
                         : "pointer",
                   }}
                 >
-                  {loading ? "AI Düşünüyor..." : "Analiz Et"}
+                  {loading ? "Performing RAG Analysis..." : "Analyze Document"}
                 </button>
               </div>
             </section>
 
-            {/* ERROR */}
+            {/* ERROR DISPLAY */}
             {error && (
               <div
                 style={{
@@ -404,11 +493,11 @@ export default function Home() {
                   fontSize: "0.9rem",
                 }}
               >
-                {error}
+                ⚠️ {error}
               </div>
             )}
 
-            {/* ANSWER */}
+            {/* AI ANSWER DISPLAY */}
             {answer && (
               <div
                 ref={answerRef}
@@ -430,7 +519,7 @@ export default function Home() {
                     letterSpacing: "1px",
                   }}
                 >
-                  AI Analiz Sonucu:
+                  Nexus AI Insights:
                 </h4>
                 <div
                   style={{
@@ -442,72 +531,120 @@ export default function Home() {
                 >
                   {answer}
                 </div>
+                <div
+                  style={{
+                    marginTop: "20px",
+                    fontSize: "0.75rem",
+                    color: "#555",
+                    borderTop: "1px solid #222",
+                    paddingTop: "10px",
+                  }}
+                >
+                  Source: {currentFileName} • Model: Llama-3.3-70B-SpecDec
+                </div>
               </div>
             )}
           </div>
         </div>
 
-        {/* FOOTER */}
-        <footer
+        {/* --- DETAILED TECHNICAL GUIDE (SUMMARY) --- */}
+        <section
           style={{
-            marginTop: "80px",
-            borderTop: "1px solid #222",
-            paddingTop: "40px",
-            paddingBottom: "60px",
+            marginTop: "60px",
+            background: "#080808",
+            padding: "40px",
+            borderRadius: "20px",
+            border: "1px solid #1a1a1a",
           }}
         >
+          <h2
+            style={{ color: "#fff", marginBottom: "30px", textAlign: "center" }}
+          >
+            Technical Deployment & Integration Guide
+          </h2>
           <div
             style={{
               display: "grid",
               gridTemplateColumns: "1fr 1fr",
-              gap: "40px",
+              gap: "50px",
             }}
           >
             <div>
-              <h4 style={{ color: "#fff", marginBottom: "15px" }}>
-                Mimari Hakkında
-              </h4>
+              <h4 style={{ color: "#60a5fa" }}>1. Data Ingestion Flow</h4>
               <p
-                style={{
-                  color: "#777",
-                  fontSize: "0.85rem",
-                  lineHeight: "1.6",
-                }}
+                style={{ fontSize: "0.9rem", color: "#888", lineHeight: "1.6" }}
               >
-                Nexus Engine, dokümanları SHA-256 ile tokenize eder.{" "}
-                <strong>Llama 3.3</strong> ve <strong>VectorDB</strong>{" "}
-                kullanarak bağlamsal doğruluk sağlar.
+                When a PDF is uploaded, the system generates a{" "}
+                <strong>SHA-256 Hash</strong>. If the document is a duplicate,
+                the system performs a lookup in <strong>MongoDB</strong> instead
+                of re-processing, saving valuable compute resources. Unique
+                files are stored in <strong>Cloudinary</strong> for persistence.
               </p>
             </div>
             <div>
-              <h4 style={{ color: "#fff", marginBottom: "15px" }}>
-                Sistem Durumu
-              </h4>
-              <ul
-                style={{
-                  color: "#777",
-                  fontSize: "0.85rem",
-                  lineHeight: "1.8",
-                  listStyle: "none",
-                  padding: 0,
-                }}
+              <h4 style={{ color: "#60a5fa" }}>2. Distributed Task Queue</h4>
+              <p
+                style={{ fontSize: "0.9rem", color: "#888", lineHeight: "1.6" }}
               >
-                <li>✅ Backend: FastAPI & Celery</li>
-                <li>✅ AI: Groq (Llama 3.3 70B)</li>
-                <li>✅ Database: MongoDB & PostgreSQL (pgvector)</li>
-              </ul>
+                Heavy AI workloads (PDF text extraction, chunking, embedding)
+                are decoupled from the API via
+                <strong> Celery & Redis</strong>. This ensures the frontend
+                remains responsive while background workers handle the intensive
+                processing.
+              </p>
+            </div>
+            <div>
+              <h4 style={{ color: "#60a5fa" }}>3. RAG Architecture</h4>
+              <p
+                style={{ fontSize: "0.9rem", color: "#888", lineHeight: "1.6" }}
+              >
+                Retrieval-Augmented Generation (RAG) is implemented using{" "}
+                <strong>PostgreSQL with pgvector</strong>. Queries are converted
+                into embeddings and compared against document chunks to retrieve
+                the most relevant context for the LLM.
+              </p>
+            </div>
+            <div>
+              <h4 style={{ color: "#60a5fa" }}>4. Containerization</h4>
+              <p
+                style={{ fontSize: "0.9rem", color: "#888", lineHeight: "1.6" }}
+              >
+                The entire ecosystem is orchestrated via{" "}
+                <strong>Docker Compose</strong>, separating the Next.js
+                frontend, FastAPI backend, and Celery workers into isolated,
+                scalable containers.
+              </p>
             </div>
           </div>
+        </section>
+
+        {/* FOOTER */}
+        <footer
+          style={{
+            marginTop: "60px",
+            borderTop: "1px solid #222",
+            paddingTop: "40px",
+            paddingBottom: "60px",
+            textAlign: "center",
+          }}
+        >
           <div
             style={{
-              textAlign: "center",
-              marginTop: "50px",
-              color: "#333",
-              fontSize: "0.75rem",
+              display: "flex",
+              justifyContent: "center",
+              gap: "20px",
+              marginBottom: "20px",
+              color: "#555",
+              fontSize: "0.9rem",
             }}
           >
-            Backend Expertise Project • Özenç Dönmezer • 2026
+            <span>FastAPI</span> • <span>Next.js</span> • <span>Celery</span> •{" "}
+            <span>Redis</span> • <span>pgvector</span> • <span>MongoDB</span>
           </div>
+          <p style={{ color: "#333", fontSize: "0.75rem" }}>
+            Nexus AI Infrastructure Project • Developed for Backend Expertise
+            Portfolio • Özenç Dönmezer • 2026
+          </p>
         </footer>
       </main>
     </div>

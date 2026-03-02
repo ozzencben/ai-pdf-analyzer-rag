@@ -19,6 +19,7 @@ class Settings(BaseSettings):
     # --- Redis & Celery ---
     REDIS_HOST: str = Field(default="localhost", alias="REDIS_HOST")
     REDIS_PORT: int = Field(default=6379, alias="REDIS_PORT")
+    REDIS_URL: str = Field(default="redis://localhost:6379/0", alias="REDIS_URL")
 
     # --- AI & LLM Keys ---
     GEMINI_API_KEY: Optional[str] = Field(default=None, alias="GEMINI_API_KEY")
