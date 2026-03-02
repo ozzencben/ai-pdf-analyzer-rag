@@ -2,9 +2,20 @@ from sqlalchemy.orm import Session
 from sentence_transformers import SentenceTransformer
 from app.models.pdf_vector import PDFVector
 from pgvector.sqlalchemy import Vector
+from app.core.config import settings
+from loguru import logger
 
 # Modelimizi yüklüyoruz (Worker'daki ile aynı model olmalı!)
-model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
+try:
+    model = SentenceTransformer(
+        'sentence-transformers/all-MiniLM-L6-v2',
+        use_auth_token=settings.HF_TOKEN
+    )
+    logger.info("✅ SentenceTransformer model loaded with HF_TOKEN.")
+except Exception as e:
+    logger.error(f"❌ Error loading model: {e}")
+    # Eğer token hatası devam ederse geçici olarak tokensız dene:
+    model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
 
 def search_top_k(db: Session, query: str, file_hash: str, k: int = 3):
     # 1. Soruyu vektöre çevir

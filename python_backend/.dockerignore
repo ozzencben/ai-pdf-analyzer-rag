@@ -1,0 +1,18 @@
+# Docker'ın içine ASLA girmemesi gerekenler
+venv/
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.git
+.gitignore
+.dockerignore
+.env
+**/.env
+
+# Eğer varsa büyük veri klasörleri
+data/
+storage/
+temp/
+*.pdf

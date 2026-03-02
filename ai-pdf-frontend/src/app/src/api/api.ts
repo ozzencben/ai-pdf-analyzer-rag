@@ -9,6 +9,7 @@ const api = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
+  // Genel bir timeout yerine servis bazlı yönetmek daha profesyoneldir
 });
 
 // PDF Yükleme Servisi
@@ -16,12 +17,13 @@ export const uploadPDF = async (file: File) => {
   const formData = new FormData();
   formData.append("file", file);
 
-  // SONUNA / EKLEDİK: "/pdf-upload/"
+  // 10MB dosya için 60 saniye (1 dk) bazen yetmez. 
+  // Burayı 300000 (5 dakika) yaparak internet hızından kaynaklı kopmaları engelliyoruz.
   const response = await api.post("/pdf-upload/", formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
-    timeout: 60000, 
+    timeout: 300000, // 5 dakika (300.000 ms)
   });
   return response.data;
 };
@@ -32,11 +34,12 @@ export const askQuestion = async (
   fileHash: string,
   topK: number = 4,
 ) => {
-  // SONUNA / EKLEDİK: "/search/query/"
   const response = await api.post("/search/query/", {
     query: query,
     file_hash: fileHash,
     top_k: topK,
+  }, {
+    timeout: 30000, // Soru sorma işlemi için 30 saniye yeterlidir
   });
   return response.data;
 };
