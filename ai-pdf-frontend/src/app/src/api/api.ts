@@ -1,8 +1,9 @@
 // src/lib/api.ts
 import axios from "axios";
 
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL 
+  ? `${process.env.NEXT_PUBLIC_API_URL.replace(/\/$/, "")}/api/v1` 
+  : "http://localhost:8000/api/v1";
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -17,7 +18,7 @@ export const uploadPDF = async (file: File) => {
   const formData = new FormData();
   formData.append("file", file);
 
-  // 10MB dosya için 60 saniye (1 dk) bazen yetmez. 
+  // 10MB dosya için 60 saniye (1 dk) bazen yetmez.
   // Burayı 300000 (5 dakika) yaparak internet hızından kaynaklı kopmaları engelliyoruz.
   const response = await api.post("/pdf-upload/", formData, {
     headers: {
@@ -34,13 +35,17 @@ export const askQuestion = async (
   fileHash: string,
   topK: number = 4,
 ) => {
-  const response = await api.post("/search/query/", {
-    query: query,
-    file_hash: fileHash,
-    top_k: topK,
-  }, {
-    timeout: 30000, // Soru sorma işlemi için 30 saniye yeterlidir
-  });
+  const response = await api.post(
+    "/search/query/",
+    {
+      query: query,
+      file_hash: fileHash,
+      top_k: topK,
+    },
+    {
+      timeout: 30000, // Soru sorma işlemi için 30 saniye yeterlidir
+    },
+  );
   return response.data;
 };
 
